@@ -5,11 +5,13 @@ import { byId, posts, reels, type Post, type Startup } from "@/lib/data";
 import { fmtCompact } from "@/lib/format";
 import Logo, { Orbs } from "./Logo";
 import Portal from "./Portal";
+import InvestSheet from "./InvestSheet";
 import { IconArrowUpRight, IconChat, IconHeart, IconPlayFilled, IconShare, IconX } from "./Icons";
 
 export default function Feed() {
   const [mode, setMode] = useState<"posts" | "reels">("posts");
   const [video, setVideo] = useState<Startup | null>(null);
+  const [invest, setInvest] = useState<Startup | null>(null);
 
   return (
     <>
@@ -21,15 +23,16 @@ export default function Feed() {
       </header>
 
       {mode === "posts"
-        ? <div>{posts.map((p) => <PostItem key={p.id} p={p} onPlay={() => setVideo(byId(p.startupId))} />)}</div>
+        ? <div>{posts.map((p) => <PostItem key={p.id} p={p} onPlay={() => setVideo(byId(p.startupId))} onInvest={() => setInvest(byId(p.startupId))} />)}</div>
         : <Reels />}
 
       {video && <Portal><VideoModal s={video} onClose={() => setVideo(null)} /></Portal>}
+      {invest && <Portal><InvestSheet s={invest} onClose={() => setInvest(null)} /></Portal>}
     </>
   );
 }
 
-function PostItem({ p, onPlay }: { p: Post; onPlay: () => void }) {
+function PostItem({ p, onPlay, onInvest }: { p: Post; onPlay: () => void; onInvest: () => void }) {
   const s = byId(p.startupId);
   const [liked, setLiked] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -66,7 +69,7 @@ function PostItem({ p, onPlay }: { p: Post; onPlay: () => void }) {
         <button className={liked ? "liked" : ""} onClick={() => setLiked(!liked)} aria-pressed={liked}><IconHeart size={19} />{p.likes + (liked ? 1 : 0)}</button>
         <button><IconChat size={18} />{p.comments}</button>
         <button aria-label="Teilen"><IconShare size={18} /></button>
-        {s.round?.open && <button className="invest">Investieren <IconArrowUpRight size={16} /></button>}
+        {s.round?.open && <button className="invest" onClick={onInvest}>Investieren <IconArrowUpRight size={16} /></button>}
       </div>
     </article>
   );

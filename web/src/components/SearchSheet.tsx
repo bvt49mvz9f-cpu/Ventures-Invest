@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { startups } from "@/lib/data";
-import { fmtEur2, fmtPct } from "@/lib/format";
+import { fmtMio } from "@/lib/format";
 import Logo from "./Logo";
 import { IconSearch } from "./Icons";
 
@@ -17,12 +17,8 @@ export default function SearchSheet({ onClose }: { onClose: () => void }) {
     return () => window.removeEventListener("keydown", esc);
   }, [onClose]);
 
-  const movers = useMemo(
-    () =>
-      startups
-        .map((s) => ({ s, chg: s.sharePrice / s.prevSharePrice - 1 }))
-        .filter((m) => m.chg !== 0)
-        .sort((a, b) => b.chg - a.chg),
+  const recent = useMemo(
+    () => [...startups].sort((a, b) => new Date(b.lastUpdate).getTime() - new Date(a.lastUpdate).getTime()),
     []
   );
 
@@ -54,20 +50,20 @@ export default function SearchSheet({ onClose }: { onClose: () => void }) {
               <div key={s.id} className="item">
                 <Logo s={s} />
                 <div className="grow"><div className="name">{s.name}</div><div className="sub">{s.sector} · {s.city}</div></div>
-                <div className="right"><div className="val">{fmtEur2(s.sharePrice)}</div><div className="sub">je Anteil</div></div>
+                <div className="right"><div className="val">{fmtMio(s.valuation)}</div><div className="sub">Bewertung</div></div>
               </div>
             ))}
           </div>
         ) : (
           <>
             <div className="section" style={{ marginTop: 28 }}>
-              <div className="section-head"><h2 className="h2">Top Mover</h2><span className="link">seit letzter Runde</span></div>
+              <div className="section-head"><h2 className="h2">Zuletzt aktualisiert</h2><span className="link">neueste Updates zuerst</span></div>
               <div className="movers">
-                {movers.map(({ s, chg }) => (
-                  <button key={s.id} className="mover" onClick={() => setQ(s.name)}>
+                {recent.map((s) => (
+                  <button key={s.id} className="mover">
                     <Logo s={s} size={44} />
                     <span className="n">{s.name}</span>
-                    <span className={`c ${chg > 0 ? "pos" : "neg"}`}>{fmtPct(chg)}</span>
+                    <span className="c muted">{s.sector}</span>
                   </button>
                 ))}
               </div>

@@ -253,3 +253,66 @@ input, textarea, select { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ─────────────────────────────────────────────
+   Prototyp-Banner (Fiktiv-Kennzeichnung)
+   ───────────────────────────────────────────── */
+.proto-banner {
+  position: fixed; z-index: 60; top: 10px; left: 50%; transform: translateX(-50%);
+  max-width: min(420px, calc(100% - 32px)); padding: 7px 16px;
+  border-radius: var(--r-pill); font-size: 11.5px; line-height: 1.35; text-align: center;
+  color: #c9c9cd; background: rgba(20, 20, 22, 0.92); border: 1px solid var(--hairline);
+  backdrop-filter: blur(12px); pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────
+   Invest-Sheet (Simulation)
+   ───────────────────────────────────────────── */
+.sheet-h { font-size: 19px; font-weight: 650; letter-spacing: -0.02em; margin-top: 26px; }
+.sim-note { margin-top: 14px; padding: 10px 14px; border-radius: 12px; font-size: 12.5px; line-height: 1.45; color: var(--muted); background: var(--surface-2); border: 1px solid var(--hairline); }
+.invest-head { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+.invest-head .grow { flex: 1; min-width: 0; }
+.invest-name { font-size: 17px; font-weight: 650; }
+.invest-head .sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.tickets { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.ticket-hint { margin-top: 10px; font-size: 12.5px; color: var(--accent); }
+.what-you-get { margin-top: 22px; padding: 16px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--hairline); }
+.eyebrow-plain { font-size: 11px; font-weight: 650; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.gets { list-style: none; margin-top: 12px; display: grid; gap: 10px; }
+.gets li { display: flex; gap: 9px; font-size: 13.5px; line-height: 1.45; color: #d6d6da; }
+.gets li svg { flex: 0 0 auto; margin-top: 2px; color: var(--accent); }
+.gets li svg.neg { color: var(--muted); }
+.summary-card { margin-top: 14px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--hairline); padding: 6px 16px; }
+.sum-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--hairline); font-size: 14px; }
+.sum-row:last-child { border-bottom: 0; }
+.sum-row span { color: var(--muted); }
+.sum-row b { font-weight: 600; text-align: right; }
+.risk-box { margin-top: 16px; border-radius: var(--r-md); padding: 14px 16px; background: rgba(255, 107, 31, 0.07); border: 1px solid rgba(255, 107, 31, 0.25); }
+.risk-box strong { font-size: 13px; letter-spacing: 0.02em; color: var(--accent-2); }
+.risk-box p { margin-top: 8px; font-size: 12.5px; line-height: 1.55; color: #c9c9cd; }
+.invest-done { padding-top: 40px; text-align: center; }
+.done-icon { width: 72px; height: 72px; margin: 0 auto; border-radius: 50%; display: grid; place-items: center; background: var(--accent-grad); color: #1a0a02; }
+.invest-done h2 { margin-top: 18px; font-size: 23px; font-weight: 650; letter-spacing: -0.02em; }
+.done-line { margin-top: 10px; font-size: 15px; line-height: 1.5; color: #d6d6da; }
+.done-line b { color: var(--text); }
+.done-note { margin-top: 12px; font-size: 12.5px; line-height: 1.5; color: var(--faint); }
+
+/* ─────────────────────────────────────────────
+   Startup-Profil
+   ───────────────────────────────────────────── */
+.profile-head { position: relative; overflow: hidden; border-radius: var(--r-lg); padding: 26px 20px 22px; background: #0c0c0c; }
+.profile-head .orb { position: absolute; border-radius: 50%; filter: blur(40px); }
+.profile-id { position: relative; z-index: 1; display: flex; gap: 16px; align-items: center; }
+.profile-names h2 { font-size: 24px; font-weight: 650; letter-spacing: -0.025em; }
+.profile-names p { margin-top: 3px; font-size: 14px; color: var(--muted); }
+.profile-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.badge { font-size: 11.5px; font-weight: 600; padding: 5px 11px; border-radius: var(--r-pill); background: var(--surface-2); border: 1px solid var(--hairline); color: #d6d6da; }
+.profile-intro { margin-top: 10px; font-size: 14px; line-height: 1.55; color: #c9c9cd; }
+.facts-src { margin-top: 10px; font-size: 11.5px; line-height: 1.45; color: var(--faint); }
+.profile-update { padding: 14px 0; border-bottom: 1px solid var(--hairline); }
+.profile-update:last-child { border-bottom: 0; }
+.update-date { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.profile-update p { font-size: 14px; line-height: 1.55; color: #d6d6da; white-space: pre-line; }
+
+/* Sheet-Position unter dem Prototyp-Banner */
+.sheet { top: 44px; }

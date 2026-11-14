@@ -16,11 +16,13 @@ export type Startup = {
   tagline: string;
   intro: string;
   tags: string[];
-  /** Preis je Anteil bei der letzten Bewertung (EUR) */
+  /** Preis je Anteil bei der letzten Bewertung (EUR) – interne Rechengröße für den geschätzten Wert */
   sharePrice: number;
-  /** Preis je Anteil bei der vorletzten Bewertung (für Top-Mover) */
-  prevSharePrice: number;
   lastValuationDate: string;
+  /** Datum des letzten Startup-Updates (ISO) */
+  lastUpdate: string;
+  /** Überprüfbare Fakten statt Gütesiegel (fiktive Beispiele) */
+  badges: string[];
   valuation: number; // Post-Money in EUR
   round?: { name: string; startsOrEnds: string; filled: number; minTicket: number; open: boolean };
   videoLength: string;
@@ -43,8 +45,9 @@ export const startups: Startup[] = [
       "Wir bündeln führende Open-Weight-Modelle hinter einer API und betreiben sie ausschließlich auf europäischer Infrastruktur. So können Unternehmen KI nutzen, ohne ihre Daten aus der EU zu geben.",
     tags: ["B2B", "LLM-Gateway", "EU-Cloud", "DSGVO"],
     sharePrice: 42.8,
-    prevSharePrice: 34.5,
     lastValuationDate: "2026-10-02",
+    lastUpdate: "2026-11-10",
+    badges: ["Lead-Investor", "Bezahltes Pilotprojekt"],
     valuation: 12_000_000,
     round: { name: "Seed II", startsOrEnds: "endet am 30. Nov.", filled: 0.72, minTicket: 100, open: true },
     videoLength: "1:42",
@@ -65,8 +68,9 @@ export const startups: Startup[] = [
       "Unsere KI-Agenten recherchieren Leads, schreiben personalisierte Ansprachen und pflegen das CRM – damit Sales-Teams wieder Zeit für Gespräche haben.",
     tags: ["Sales", "KI-Agenten", "SaaS"],
     sharePrice: 18.6,
-    prevSharePrice: 15.2,
     lastValuationDate: "2026-09-12",
+    lastUpdate: "2026-11-08",
+    badges: ["10 Pilotkunden"],
     valuation: 8_500_000,
     round: { name: "Seed", startsOrEnds: "startet am 12. Dez.", filled: 0, minTicket: 50, open: true },
     videoLength: "0:58",
@@ -87,8 +91,9 @@ export const startups: Startup[] = [
       "Privano automatisiert Datenschutz-Prozesse für kleine und mittlere Unternehmen – von Auskunftsanfragen bis zur Dokumentation. Platzhaltertext: bitte durch echte Beschreibung ersetzen.",
     tags: ["Privacy-Tech", "KMU", "Compliance"],
     sharePrice: 9.4,
-    prevSharePrice: 9.4,
     lastValuationDate: "2026-06-20",
+    lastUpdate: "2026-10-01",
+    badges: ["EXIST-Förderung"],
     valuation: 3_200_000,
     round: { name: "Pre-Seed", startsOrEnds: "endet am 18. Dez.", filled: 0.41, minTicket: 25, open: true },
     videoLength: "1:15",
@@ -109,8 +114,9 @@ export const startups: Startup[] = [
       "Wir machen Mieter*innen zu Stromproduzenten: modulare Speicher im Keller, gesteuert per Software, finanziert über die Stromersparnis.",
     tags: ["Energie", "Hardware", "Mieterstrom"],
     sharePrice: 21.4,
-    prevSharePrice: 19.1,
     lastValuationDate: "2026-08-04",
+    lastUpdate: "2026-11-04",
+    badges: ["Umsatz seit 2024"],
     valuation: 28_000_000,
     videoLength: "2:05",
   },
@@ -130,8 +136,9 @@ export const startups: Startup[] = [
       "Klarheit übersetzt Arztbriefe und Laborwerte in verständliche Sprache – medizinisch geprüft und direkt in der App der Patient*innen.",
     tags: ["Digital Health", "B2C", "Medizin"],
     sharePrice: 33.1,
-    prevSharePrice: 30.2,
     lastValuationDate: "2026-07-15",
+    lastUpdate: "2026-11-12",
+    badges: ["Lead-Investor", "Medizinisch geprüft"],
     valuation: 15_000_000,
     round: { name: "Seed Extension", startsOrEnds: "endet am 5. Dez.", filled: 0.88, minTicket: 100, open: true },
     videoLength: "1:30",
@@ -151,8 +158,9 @@ export const startups: Startup[] = [
     intro: "Versandverpackungen, die 50-mal zurückkommen – mit Pfand, Tracking und einem Netz aus Rückgabestellen.",
     tags: ["Circular Economy", "E-Commerce", "Logistik"],
     sharePrice: 18.6,
-    prevSharePrice: 19.06,
     lastValuationDate: "2026-05-28",
+    lastUpdate: "2026-09-12",
+    badges: ["Patent angemeldet"],
     valuation: 7_000_000,
     videoLength: "1:05",
   },
@@ -171,8 +179,9 @@ export const startups: Startup[] = [
     intro: "Steuern, Rücklagen und Liquidität auf einen Blick – automatisch aus dem Geschäftskonto berechnet.",
     tags: ["B2C", "Steuern", "Banking"],
     sharePrice: 27.9,
-    prevSharePrice: 25.9,
     lastValuationDate: "2026-09-01",
+    lastUpdate: "2026-10-20",
+    badges: ["400 Beta-Nutzer"],
     valuation: 9_000_000,
     videoLength: "0:48",
   },
@@ -191,8 +200,9 @@ export const startups: Startup[] = [
     intro: "Unsere Cobots lernen Handgriffe per Vormachen – gebaut für mittelständische Fertigungen ohne eigene Robotik-Abteilung.",
     tags: ["Industrie", "Hardware", "Automatisierung"],
     sharePrice: 96.5,
-    prevSharePrice: 77.4,
     lastValuationDate: "2026-10-20",
+    lastUpdate: "2026-10-28",
+    badges: ["Patent angemeldet", "Serienaufträge"],
     valuation: 42_000_000,
     round: { name: "Series A+", startsOrEnds: "endet am 22. Dez.", filled: 0.35, minTicket: 250, open: true },
     videoLength: "2:20",
@@ -212,8 +222,9 @@ export const startups: Startup[] = [
     intro: "Ein Bindemittel aus Industrieabfällen, das klassischen Zement im Hochbau ersetzt.",
     tags: ["Bau", "Materialien", "DeepTech"],
     sharePrice: 6.2,
-    prevSharePrice: 6.2,
     lastValuationDate: "2026-04-10",
+    lastUpdate: "2026-08-25",
+    badges: ["EXIST-Förderung", "Laborprototyp"],
     valuation: 2_500_000,
     round: { name: "Pre-Seed", startsOrEnds: "endet am 10. Jan.", filled: 0.18, minTicket: 25, open: true },
     videoLength: "1:10",
@@ -233,22 +244,23 @@ export const startups: Startup[] = [
     intro: "Lumen liest Verträge, markiert Risiken und schlägt Formulierungen vor – trainiert auf deutschem Recht.",
     tags: ["LegalTech", "LLM", "B2B"],
     sharePrice: 24.0,
-    prevSharePrice: 26.1,
     lastValuationDate: "2026-08-22",
+    lastUpdate: "2026-10-22",
+    badges: ["Lead-Investor", "Umsatz seit 2025"],
     valuation: 11_000_000,
     videoLength: "1:20",
   },
 ];
 
-export type Position = { startupId: string; shares: number; invested: number };
+export type Position = { startupId: string; shares: number; invested: number; payouts: number };
 
 export const positions: Position[] = [
-  { startupId: "melious", shares: 60, invested: 1800 },
-  { startupId: "zoopa", shares: 90, invested: 1200 },
-  { startupId: "privano", shares: 120, invested: 1128 },
-  { startupId: "nordwatt", shares: 45, invested: 860 },
-  { startupId: "klarheit", shares: 30, invested: 900 },
-  { startupId: "kernel", shares: 12, invested: 960 },
+  { startupId: "melious", shares: 60, invested: 1800, payouts: 0 },
+  { startupId: "zoopa", shares: 90, invested: 1200, payouts: 0 },
+  { startupId: "privano", shares: 120, invested: 1128, payouts: 0 },
+  { startupId: "nordwatt", shares: 45, invested: 860, payouts: 150 },
+  { startupId: "klarheit", shares: 30, invested: 900, payouts: 0 },
+  { startupId: "kernel", shares: 12, invested: 960, payouts: 0 },
 ];
 
 export type Reel = { id: string; startupId: string; title: string; caption: string; likes: number; comments: number; kind: string };

@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { startups, type Stage, type Startup } from "@/lib/data";
 import { fmtEur, fmtMio } from "@/lib/format";
 import Logo from "./Logo";
+import InvestSheet from "./InvestSheet";
+import StartupProfile from "./StartupProfile";
 import { IconArrowUpRight, IconBookmark, IconCheck, IconChevron, IconSearch, IconX } from "./Icons";
 
 type Criterion = { key: string; label: string; test: (s: Startup) => boolean };
@@ -46,6 +48,8 @@ export default function Screening() {
   const [sort, setSort] = useState<"match" | "valuation" | "ticket">("match");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [shortlist, setShortlist] = useState<string[]>([]);
+  const [sheet, setSheet] = useState<Startup | null>(null);
+  const [profile, setProfile] = useState<Startup | null>(null);
   const bar = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -163,17 +167,28 @@ export default function Screening() {
                   {criteria.length > 0
                     ? <div className={`match ${match === 1 ? "pos" : ""}`}>{Math.round(match * 100)} %</div>
                     : <div className="val">{fmtMio(s.valuation)}</div>}
-                  <div className="sub">{s.round?.open ? `ab ${fmtEur(s.round.minTicket)}` : "keine Runde"}</div>
+                  <div className="sub">{s.round?.open ? `ab ${fmtEur(s.round.minTicket)}` : "keine offene Runde"}</div>
                 </div>
               </button>
               {open && (
                 <div className="detail">
                   <p>{s.intro}</p>
+                  {s.badges.length > 0 && (
+                    <div className="pills" style={{ flexWrap: "wrap", marginTop: 10 }}>
+                      {s.badges.map((b) => <span key={b} className="pill">{b}</span>)}
+                    </div>
+                  )}
                   <div className="facts">
                     <div><div className="k">Bewertung</div><div className="v">{fmtMio(s.valuation)}</div></div>
                     <div><div className="k">Team</div><div className="v">{s.team} Personen</div></div>
                     <div><div className="k">Gegründet</div><div className="v">{s.founded}</div></div>
+                    <div><div className="k">Mindestbetrag</div><div className="v">{s.round?.open ? `ab ${fmtEur(s.round.minTicket)}` : "–"}</div></div>
+                    <div><div className="k">Instrument</div><div className="v">Wirtschaftliches Beteiligungsrecht</div></div>
+                    <div><div className="k">Stimmrechte</div><div className="v">Keine</div></div>
                   </div>
+                  <p className="facts-src">
+                    Bewertung: Post-Money der letzten Runde, Stand {s.lastValuationDate} – Schätzung, kein handelbarer Kurs.
+                  </p>
                   {criteria.length > 0 && (
                     <div className="checks">
                       {criteria.map((c, i) => (
@@ -182,17 +197,26 @@ export default function Screening() {
                     </div>
                   )}
                   <div className="row" style={{ marginTop: 16 }}>
-                    <button className={`btn ${s.round?.open ? "btn-accent" : "btn-white"}`}>{s.round?.open ? "Investieren" : "Profil ansehen"} <IconArrowUpRight size={16} /></button>
+                    <button
+                      className={`btn ${s.round?.open ? "btn-accent" : "btn-white"}`}
+                      onClick={() => (s.round?.open ? setSheet(s) : setProfile(s))}
+                    >
+                      {s.round?.open ? "Investieren" : "Profil ansehen"} <IconArrowUpRight size={16} />
+                    </button>
                     <button className="btn" style={{ background: "var(--surface-2)", color: saved ? "var(--accent)" : undefined }} onClick={() => toggle(shortlist, s.id, setShortlist)} aria-pressed={saved}>
                       <IconBookmark size={16} fill={saved ? "currentColor" : "none"} />{saved ? "Gemerkt" : "Merken"}
                     </button>
                   </div>
+                  <button className="more-link" style={{ marginTop: 12 }} onClick={() => setProfile(s)}>Vollständiges Profil ansehen</button>
                 </div>
               )}
             </div>
           );
         })}
       </div>
+
+      {sheet && <InvestSheet s={sheet} onClose={() => setSheet(null)} />}
+      {profile && <StartupProfile s={profile} onInvest={() => { setProfile(null); setSheet(profile); }} onClose={() => setProfile(null)} />}
     </>
   );
 }

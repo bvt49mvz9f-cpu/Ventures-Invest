@@ -37,6 +37,9 @@ export default function AppShell() {
   return (
     <>
       <div className="ambient" aria-hidden="true"><span className="a1" /><span className="a2" /></div>
+      <div className="proto-banner" role="note">
+        Prototyp – alle Unternehmen, Zahlen und Bewertungen sind fiktive Beispiele. Kein Anlageangebot.
+      </div>
       <main className="app">
         <div className="pager" ref={pager} onScroll={onScroll}>
           <section className="page" aria-label="Feed"><Feed /></section>
