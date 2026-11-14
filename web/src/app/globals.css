@@ -130,17 +130,18 @@ input, textarea, select { font: inherit; color: inherit; }
 .bubble.sm .p { font-size: 13px; }
 .bubble.sm .l { font-size: 9.5px; }
 
-.list { margin: 0 -4px; }
-.item { display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 4px; border-bottom: 1px solid var(--hairline); }
-.list > .item:last-child { border-bottom: 0; }
+.list { margin: 4px 0 0; }
+.item { display: flex; align-items: center; gap: 14px; width: 100%; padding: 13px 0; }
+.item + .item, .list > div + div { margin-top: 6px; }
 .item .grow { flex: 1; min-width: 0; }
-.item .name { font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.item .sub { font-size: 13.5px; color: var(--muted); margin-top: 3px; }
+.item .name { font-size: 15px; font-weight: 550; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item .sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
 .item .right { text-align: right; flex: 0 0 auto; }
 .item .sub.pos { color: var(--accent); }
+.item .val { font-size: 15px; font-weight: 550; }
+.more-link { display: block; margin-top: 10px; font-size: 14px; color: var(--muted); font-weight: 500; }
 .hero-line.small { margin-top: 4px; font-size: 12.5px; color: var(--faint); }
-.item .val { font-size: 16px; font-weight: 600; }
-.logo { flex: 0 0 auto; display: grid; place-items: center; font-weight: 650; }
+.logo { flex: 0 0 auto; display: block; }
 
 .progress { height: 4px; border-radius: 2px; background: #222; overflow: hidden; margin-top: 8px; }
 .progress span { display: block; height: 100%; background: var(--accent); border-radius: 2px; }
@@ -234,7 +235,7 @@ input, textarea, select { font: inherit; color: inherit; }
 .results-head { display: flex; justify-content: space-between; align-items: center; margin: 26px 0 2px; font-size: 14px; color: var(--muted); }
 .results-head select { background: none; border: 0; color: var(--text); outline: none; font-weight: 550; }
 .match { font-size: 16px; font-weight: 650; }
-.detail { padding: 0 4px 18px 62px; border-bottom: 1px solid var(--hairline); animation: pop 0.2s ease; }
+.detail { padding: 2px 0 18px 50px; animation: pop 0.2s ease; }
 .detail p { font-size: 14px; line-height: 1.5; color: #c9c9cd; }
 .facts { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 4px 22px; margin-top: 12px; font-size: 13px; }
 .facts .k { color: var(--muted); }

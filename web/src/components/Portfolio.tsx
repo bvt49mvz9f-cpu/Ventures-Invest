@@ -35,6 +35,7 @@ export default function Portfolio({ onOpenScreening }: { onOpenScreening: () => 
 function Overview({ onSearch, onOpenScreening }: { onSearch: () => void; onOpenScreening: () => void }) {
   const [showRounds, setShowRounds] = useState(true);
   const [slide, setSlide] = useState(0);
+  const [allPositions, setAllPositions] = useState(false);
   const track = useRef<HTMLDivElement>(null);
 
   const rows = useMemo(
@@ -103,7 +104,7 @@ function Overview({ onSearch, onOpenScreening }: { onSearch: () => void; onOpenS
       <div className="section">
         <div className="section-head"><h2 className="h2">Positionen <IconChevron size={18} className="muted" /></h2></div>
         <div className="list">
-          {rows.map((r) => (
+          {(allPositions ? rows : rows.slice(0, 4)).map((r) => (
             <button key={r.startupId} className="item">
               <Logo s={r.s} />
               <div className="grow">
@@ -117,6 +118,11 @@ function Overview({ onSearch, onOpenScreening }: { onSearch: () => void; onOpenS
             </button>
           ))}
         </div>
+        {rows.length > 4 && (
+          <button className="more-link" onClick={() => setAllPositions(!allPositions)}>
+            {allPositions ? "Weniger anzeigen" : `Alle ${rows.length} Positionen anzeigen`}
+          </button>
+        )}
       </div>
     </>
   );

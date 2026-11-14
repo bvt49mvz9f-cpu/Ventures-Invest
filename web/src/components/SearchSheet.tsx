@@ -65,7 +65,7 @@ export default function SearchSheet({ onClose }: { onClose: () => void }) {
               <div className="movers">
                 {movers.map(({ s, chg }) => (
                   <button key={s.id} className="mover" onClick={() => setQ(s.name)}>
-                    <Logo s={s} size={56} />
+                    <Logo s={s} size={44} />
                     <span className="n">{s.name}</span>
                     <span className={`c ${chg > 0 ? "pos" : "neg"}`}>{fmtPct(chg)}</span>
                   </button>
