@@ -314,5 +314,5 @@ input, textarea, select { font: inherit; color: inherit; }
 .update-date { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
 .profile-update p { font-size: 14px; line-height: 1.55; color: #d6d6da; white-space: pre-line; }
 
-/* Sheet-Position unter dem Prototyp-Banner */
-.sheet { top: 44px; }
+/* Sheet-Position */
+.sheet { top: 10px; }
