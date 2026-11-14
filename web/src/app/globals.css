@@ -146,7 +146,7 @@ input, textarea, select { font: inherit; color: inherit; }
 .item .val { font-size: 15px; font-weight: 550; }
 .more-link { display: block; margin-top: 10px; font-size: 14px; color: var(--muted); font-weight: 500; }
 .hero-line.small { margin-top: 4px; font-size: 12.5px; color: var(--faint); }
-.logo { flex: 0 0 auto; display: block; }
+.logo { flex: 0 0 auto; display: block; object-fit: contain; box-sizing: border-box; }
 
 .progress { height: 4px; border-radius: 2px; background: #222; overflow: hidden; margin-top: 8px; }
 .progress span { display: block; height: 100%; background: var(--accent); border-radius: 2px; }
@@ -240,6 +240,12 @@ input, textarea, select { font: inherit; color: inherit; }
 .results-head { display: flex; justify-content: space-between; align-items: center; margin: 26px 0 2px; font-size: 14px; color: var(--muted); }
 .results-head select { background: none; border: 0; color: var(--text); outline: none; font-weight: 550; }
 .match { font-size: 16px; font-weight: 650; }
+.list-clean .item { padding: 15px 0; }
+.list-clean > div + div { margin-top: 12px; }
+.list-clean .item .name { font-size: 14.5px; }
+.list-clean .item .val, .list-clean .match { font-size: 14.5px; }
+.list-clean .detail { padding-left: 44px; }
+.detail-meta { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
 .detail { padding: 2px 0 18px 50px; animation: pop 0.2s ease; }
 .detail p { font-size: 14px; line-height: 1.5; color: #c9c9cd; }
 .facts { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 4px 22px; margin-top: 12px; font-size: 13px; }

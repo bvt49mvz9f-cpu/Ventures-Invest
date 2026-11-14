@@ -17,10 +17,11 @@ const CITIES = [...new Set(startups.map((s) => s.city))];
 /** Sehr einfache „Beschreibung → Kriterien“-Logik – später durch echte semantische Suche ersetzen. */
 const KEYWORDS: { re: RegExp; c: Criterion }[] = [
   { re: /\b(ki|ai|künstliche intelligenz|llm)\b/i, c: { key: "s:AI", label: "AI", test: (s) => s.sector === "AI" } },
-  { re: /(klima|climate|energie|nachhaltig|co2|co₂)/i, c: { key: "s:Climate", label: "Climate", test: (s) => s.sector === "Climate" } },
-  { re: /(health|gesundheit|medizin)/i, c: { key: "s:Health", label: "Health", test: (s) => s.sector === "Health" } },
-  { re: /(fintech|finanz|banking)/i, c: { key: "s:Fintech", label: "Fintech", test: (s) => s.sector === "Fintech" } },
-  { re: /(robot|automatisierung|industrie)/i, c: { key: "s:Robotics", label: "Robotics", test: (s) => s.sector === "Robotics" } },
+  { re: /(security|sicherheit|cyber|deepfake|vpn|zero.?trust)/i, c: { key: "s:Security", label: "Security", test: (s) => s.sector === "Security" } },
+  { re: /(compliance|datenschutz|dsgvo|gdpr|nis2)/i, c: { key: "s:Compliance", label: "Compliance", test: (s) => s.sector === "Compliance" } },
+  { re: /(cloud|storage|speicher|kubernetes|infrastruktur)/i, c: { key: "s:Cloud", label: "Cloud", test: (s) => s.sector === "Cloud" } },
+  { re: /(chip|halbleiter|semiconductor|deeptech)/i, c: { key: "s:Chips", label: "Chips", test: (s) => s.sector === "Chips" } },
+  { re: /(devtools|testing|testdaten|entwickler)/i, c: { key: "s:DevTools", label: "DevTools", test: (s) => s.sector === "DevTools" } },
   { re: /(vertrieb|sales|kunden|akquise)/i, c: { key: "s:Sales", label: "Sales", test: (s) => s.sector === "Sales" } },
   { re: /(saarland|saarbrücken)/i, c: { key: "c:Saarbrücken", label: "Saarland", test: (s) => s.city === "Saarbrücken" } },
   { re: /pre-?seed/i, c: { key: "p:Pre-Seed", label: "Pre-Seed", test: (s) => s.stage === "Pre-Seed" } },
@@ -33,7 +34,7 @@ for (const city of CITIES) {
   if (city !== "Saarbrücken") KEYWORDS.push({ re: new RegExp(city, "i"), c: { key: `c:${city}`, label: city, test: (s) => s.city === city } });
 }
 
-const EXAMPLES = ["KI aus dem Saarland mit offener Runde", "Klima-Startups in der Seed-Phase", "B2B Vertrieb"];
+const EXAMPLES = ["KI aus dem Saarland mit offener Runde", "Cybersecurity in der Pre-Seed-Phase", "B2B Vertrieb"];
 
 type MenuKey = "sector" | "stage" | "city" | null;
 
@@ -151,17 +152,16 @@ export default function Screening() {
 
       {results.length === 0 && <div className="empty">Keine passenden Startups. Versuch es mit weniger Kriterien.</div>}
 
-      <div className="list">
+      <div className="list list-clean">
         {results.map(({ s, hits, match }) => {
           const open = expanded === s.id;
           const saved = shortlist.includes(s.id);
           return (
             <div key={s.id}>
               <button className="item" onClick={() => setExpanded(open ? null : s.id)} aria-expanded={open} style={open ? { borderBottom: 0 } : undefined}>
-                <Logo s={s} />
+                <Logo s={s} size={30} />
                 <div className="grow">
                   <div className="name">{s.name}</div>
-                  <div className="sub">{s.sector} · {s.stage} · {s.city}</div>
                 </div>
                 <div className="right">
                   {criteria.length > 0
@@ -172,6 +172,7 @@ export default function Screening() {
               </button>
               {open && (
                 <div className="detail">
+                  <div className="detail-meta">{s.sector} · {s.stage} · {s.city}</div>
                   <p>{s.intro}</p>
                   {s.badges.length > 0 && (
                     <div className="pills" style={{ flexWrap: "wrap", marginTop: 10 }}>

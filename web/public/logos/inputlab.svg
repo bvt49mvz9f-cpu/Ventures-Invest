@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 300 300" version="1.1"
+    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xml:space="preserve" xmlns:serif="http://www.serif.com/"
+    style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-593,-1368)">
+        <g id="inputlab-logomark-RGB" transform="matrix(0.234192,0,0,0.3663,594.23,1033.2)">
+            <rect x="-3" y="914" width="1281" height="819" style="fill:none;"/>
+            <g id="logomark" transform="matrix(3.89607,-0.904214,1.41428,2.49093,-3235.33,-1079.41)">
+                <circle cx="568.5" cy="1171.5" r="153.5" style="fill:none;"/>
+                <clipPath id="_clip1">
+                    <circle cx="568.5" cy="1171.5" r="153.5"/>
+                </clipPath>
+                <g clip-path="url(#_clip1)">
+                    <g id="stripe" transform="matrix(0.852778,0,0,1.02333,-219.467,87.79)">
+                        <rect x="744" y="1034" width="360" height="50" style="fill:rgb(51,176,208);"/>
+                    </g>
+                    <g id="stripe1" serif:id="stripe" transform="matrix(0.852778,0,0,1.02333,-219.467,21.2733)">
+                        <rect x="744" y="1034" width="360" height="50" style="fill:rgb(153,215,231);"/>
+                    </g>
+                    <g id="stripe2" serif:id="stripe" transform="matrix(0.852778,0,0,1.02333,-219.467,-45.2433)">
+                        <rect x="744" y="1034" width="360" height="50" style="fill:rgb(102,196,220);"/>
+                    </g>
+                    <g id="stripe3" serif:id="stripe" transform="matrix(0.852778,0,0,1.02333,-219.467,154.328)">
+                        <rect x="744" y="1034" width="360" height="50" style="fill:rgb(153,215,231);"/>
+                    </g>
+                    <g id="stripe4" serif:id="stripe" transform="matrix(0.852778,0,0,1.02333,-219.467,220.822)">
+                        <rect x="744" y="1034" width="360" height="50" style="fill:rgb(0,156,196);"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
