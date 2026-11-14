@@ -2,12 +2,40 @@
 
 export type Stage = "Pre-Seed" | "Seed" | "Series A";
 
+/** Runde mit laufenden Teilabschlüssen (Rolling Closing) – Beispielwerte, keine Produktparameter. */
+export type Round = {
+  name: string;
+  /** Enddatum der Angebotsdauer (ISO) */
+  endDate: string;
+  /** Angestrebtes Volumen – keine Auszahlungsvoraussetzung */
+  target: number;
+  /** Rundenobergrenze – maximal annehmbares Gesamtvolumen */
+  cap: number;
+  /** Verbindliches Finanzierungsminimum, falls vorhanden */
+  fundingMinimum?: number;
+  /** Mindestbetrag je Zeichnung */
+  minTicket: number;
+  /** Beispiel-Schwelle für einen Teilabschluss (abschließbares Kapital) */
+  closingThreshold: number;
+  /** Volumen wirksam abgeschlossener Investments (kumuliert) */
+  closed: number;
+  /** Volumen offener, noch nicht abgeschlossener Zeichnungen */
+  openCommitments: number;
+  /** Eingegangene Zahlungen, Prüfungen/Fristen noch offen */
+  pendingPayments: number;
+  /** Bestätigt an das Startup ausgezahltes Kapital (Brutto) */
+  paidOut: number;
+  /** Tranchenhistorie */
+  tranches: { label: string; volume: number; date: string }[];
+  open: boolean;
+};
+
 export type Startup = {
   id: string;
   name: string;
   legalName: string;
   initial: string;
-  hue: number; // Farbton für Logo-Kachel und Cover
+  hue: number;
   sector: string;
   stage: Stage;
   city: string;
@@ -24,9 +52,14 @@ export type Startup = {
   /** Überprüfbare Fakten statt Gütesiegel (fiktive Beispiele) */
   badges: string[];
   valuation: number; // Post-Money in EUR
-  round?: { name: string; startsOrEnds: string; filled: number; minTicket: number; open: boolean };
+  round?: Round;
   videoLength: string;
 };
+
+/** Verbleibender Zeichnungsrahmen: Obergrenze minus abgeschlossen und offen gezeichnet. */
+export function remainingSpace(r: Round) {
+  return Math.max(0, r.cap - r.closed - r.openCommitments);
+}
 
 export const startups: Startup[] = [
   {
@@ -49,7 +82,24 @@ export const startups: Startup[] = [
     lastUpdate: "2026-11-10",
     badges: ["Lead-Investor", "Bezahltes Pilotprojekt"],
     valuation: 12_000_000,
-    round: { name: "Seed II", startsOrEnds: "endet am 30. Nov.", filled: 0.72, minTicket: 100, open: true },
+    round: {
+      name: "Seed II",
+      endDate: "2026-12-30",
+      target: 300_000,
+      cap: 300_000,
+      minTicket: 100,
+      closingThreshold: 10_000,
+      closed: 72_000,
+      openCommitments: 3_500,
+      pendingPayments: 1_500,
+      paidOut: 50_000,
+      tranches: [
+        { label: "Teilabschluss 1", volume: 10_000, date: "2026-11-04" },
+        { label: "Teilabschluss 2", volume: 20_000, date: "2026-11-08" },
+        { label: "Teilabschluss 3", volume: 20_000, date: "2026-11-12" },
+      ],
+      open: true,
+    },
     videoLength: "1:42",
   },
   {
@@ -72,7 +122,20 @@ export const startups: Startup[] = [
     lastUpdate: "2026-11-08",
     badges: ["10 Pilotkunden"],
     valuation: 8_500_000,
-    round: { name: "Seed", startsOrEnds: "startet am 12. Dez.", filled: 0, minTicket: 50, open: true },
+    round: {
+      name: "Seed",
+      endDate: "2027-01-12",
+      target: 150_000,
+      cap: 150_000,
+      minTicket: 50,
+      closingThreshold: 10_000,
+      closed: 0,
+      openCommitments: 0,
+      pendingPayments: 0,
+      paidOut: 0,
+      tranches: [],
+      open: true,
+    },
     videoLength: "0:58",
   },
   {
@@ -95,7 +158,23 @@ export const startups: Startup[] = [
     lastUpdate: "2026-10-01",
     badges: ["EXIST-Förderung"],
     valuation: 3_200_000,
-    round: { name: "Pre-Seed", startsOrEnds: "endet am 18. Dez.", filled: 0.41, minTicket: 25, open: true },
+    round: {
+      name: "Pre-Seed",
+      endDate: "2026-12-18",
+      target: 60_000,
+      cap: 60_000,
+      minTicket: 25,
+      closingThreshold: 10_000,
+      closed: 24_600,
+      openCommitments: 500,
+      pendingPayments: 900,
+      paidOut: 10_000,
+      tranches: [
+        { label: "Teilabschluss 1", volume: 10_000, date: "2026-11-06" },
+        { label: "Teilabschluss 2", volume: 14_600, date: "2026-11-13" },
+      ],
+      open: true,
+    },
     videoLength: "1:15",
   },
   {
@@ -140,7 +219,24 @@ export const startups: Startup[] = [
     lastUpdate: "2026-11-12",
     badges: ["Lead-Investor", "Medizinisch geprüft"],
     valuation: 15_000_000,
-    round: { name: "Seed Extension", startsOrEnds: "endet am 5. Dez.", filled: 0.88, minTicket: 100, open: true },
+    round: {
+      name: "Seed Extension",
+      endDate: "2026-12-05",
+      target: 100_000,
+      cap: 100_000,
+      minTicket: 100,
+      closingThreshold: 10_000,
+      closed: 88_000,
+      openCommitments: 4_200,
+      pendingPayments: 2_800,
+      paidOut: 70_000,
+      tranches: [
+        { label: "Teilabschluss 1", volume: 10_000, date: "2026-10-28" },
+        { label: "Teilabschluss 2", volume: 30_000, date: "2026-11-04" },
+        { label: "Teilabschluss 3", volume: 30_000, date: "2026-11-10" },
+      ],
+      open: true,
+    },
     videoLength: "1:30",
   },
   {
@@ -204,7 +300,24 @@ export const startups: Startup[] = [
     lastUpdate: "2026-10-28",
     badges: ["Patent angemeldet", "Serienaufträge"],
     valuation: 42_000_000,
-    round: { name: "Series A+", startsOrEnds: "endet am 22. Dez.", filled: 0.35, minTicket: 250, open: true },
+    round: {
+      name: "Series A+",
+      endDate: "2026-12-22",
+      target: 400_000,
+      cap: 400_000,
+      minTicket: 250,
+      closingThreshold: 10_000,
+      closed: 140_000,
+      openCommitments: 8_000,
+      pendingPayments: 3_500,
+      paidOut: 120_000,
+      tranches: [
+        { label: "Teilabschluss 1", volume: 40_000, date: "2026-11-02" },
+        { label: "Teilabschluss 2", volume: 50_000, date: "2026-11-08" },
+        { label: "Teilabschluss 3", volume: 50_000, date: "2026-11-13" },
+      ],
+      open: true,
+    },
     videoLength: "2:20",
   },
   {
@@ -226,7 +339,20 @@ export const startups: Startup[] = [
     lastUpdate: "2026-08-25",
     badges: ["EXIST-Förderung", "Laborprototyp"],
     valuation: 2_500_000,
-    round: { name: "Pre-Seed", startsOrEnds: "endet am 10. Jan.", filled: 0.18, minTicket: 25, open: true },
+    round: {
+      name: "Pre-Seed",
+      endDate: "2027-01-10",
+      target: 50_000,
+      cap: 50_000,
+      minTicket: 25,
+      closingThreshold: 10_000,
+      closed: 9_000,
+      openCommitments: 2_400,
+      pendingPayments: 1_100,
+      paidOut: 0,
+      tranches: [],
+      open: true,
+    },
     videoLength: "1:10",
   },
   {
@@ -306,7 +432,7 @@ export const posts: Post[] = [
   },
   {
     id: "p5", startupId: "klarheit", ago: "vor 2 Tagen",
-    text: "Unsere Seed-Extension ist zu 88 % vergeben. Wer noch dabei sein will: Die Runde schließt am 5. Dezember.",
+    text: "Drei Teilabschlüsse sind abgeschlossen: 70.000 € sind bei uns angekommen. Die Runde läuft weiter – wir nehmen noch Zeichnungen bis zur Obergrenze an.",
     likes: 73, comments: 9,
   },
   {
