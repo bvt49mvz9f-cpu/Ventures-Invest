@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { posts, type Startup } from "@/lib/data";
+import { posts, remainingSpace, type Startup } from "@/lib/data";
 import { fmtDate, fmtEur, fmtMio, fmtNum } from "@/lib/format";
 import Logo, { Orbs } from "./Logo";
 import { IconArrowUpRight, IconX } from "./Icons";
 
 /**
  * Startup-Profil: Gründerstory + strukturierte Fakten + Badges (überprüfbare
- * Fakten statt Gütesiegel) + letzte Updates. Buttons öffnen den simulierten
- * Investment-Flow bzw. führen zurück.
+ * Fakten statt Gütesiegel) + letzte Updates + Runde mit laufenden
+ * Teilabschlüssen (Rolling Closing).
  */
 export default function StartupProfile({
   s, onInvest, onClose,
@@ -26,6 +26,8 @@ export default function StartupProfile({
 
   const daysAgo = Math.max(0, Math.round((now - new Date(s.lastUpdate).getTime()) / 86_400_000));
   const overdue = daysAgo > 60;
+  const r = s.round;
+  const space = r ? remainingSpace(r) : 0;
 
   return (
     <>
@@ -67,6 +69,93 @@ export default function StartupProfile({
           </div>
         </div>
 
+        {r && (
+          <div className="section">
+            <div className="section-head">
+              <h2 className="h2">Runde: {r.name}</h2>
+              <span className="link">{r.open ? `offen bis ${fmtDate(r.endDate)}` : "geschlossen"}</span>
+            </div>
+
+            <div className="summary-card">
+              <div className="sum-row"><span>Finanzierungsziel</span><b>{fmtEur(r.target)}</b></div>
+              {r.fundingMinimum ? (
+                <div className="sum-row"><span>Verbindliches Minimum</span><b>{fmtEur(r.fundingMinimum)} – vor Freigabe zu erfüllen</b></div>
+              ) : (
+                <div className="sum-row"><span>Verbindliches Minimum</span><b>keines in dieser Runde</b></div>
+              )}
+              <div className="sum-row"><span>Obergrenze</span><b>{fmtEur(r.cap)}</b></div>
+              <div className="sum-row"><span>Zeichnungsraum</span><b>{space > 0 ? `noch ${fmtEur(space)}` : "ausgeschöpft"}</b></div>
+              <div className="sum-row"><span>Teilabschluss-Schwelle</span><b>{fmtEur(r.closingThreshold)} abschließbares Kapital (Beispiel)</b></div>
+              <div className="sum-row"><span>Mindestbetrag je Zeichnung</span><b>ab {fmtEur(r.minTicket)}</b></div>
+            </div>
+
+            <div className="round-progress-card" style={{ marginTop: 14 }}>
+              <div className="eyebrow-plain">Fortschritt – getrennt nach Status</div>
+              <div className="stacked-bar" aria-label="Fortschritt der Runde">
+                <span className="seg closed" style={{ width: `${(r.closed / r.cap) * 100}%` }} />
+                <span className="seg open-c" style={{ width: `${(r.openCommitments / r.cap) * 100}%` }} />
+                <span className="seg pending" style={{ width: `${(r.pendingPayments / r.cap) * 100}%` }} />
+              </div>
+              <ul className="progress-legend">
+                <li><i className="dot closed" />Abgeschlossen: {fmtEur(r.closed)}</li>
+                <li><i className="dot open-c" />Offene Zeichnungen: {fmtEur(r.openCommitments)}</li>
+                <li><i className="dot pending" />Zahlungen in Prüfung: {fmtEur(r.pendingPayments)}</li>
+                <li className="muted">Obergrenze: {fmtEur(r.cap)}</li>
+              </ul>
+              <p className="facts-src">
+                Abgeschlossene Investments, offene Zeichnungen und geprüfte Zahlungen werden getrennt
+                gezählt. Gemerkte Startups (Watchlist) zählen nicht als Kapital.
+              </p>
+            </div>
+
+            <div className="payout-card">
+              <div className="payout-row">
+                <span>An das Startup ausgezahlt</span>
+                <strong>{fmtEur(r.paidOut)}</strong>
+              </div>
+              <p className="facts-src">
+                Nur bestätigte Freigaben zählen. Brutto-Investmentvolumen: {fmtEur(r.closed)} –
+                die Nettoauszahlung nach offengelegten Gebühren kann geringer ausfallen.
+                Diese Auszahlung geht ans Startup, sie ist keine Renditezahlung an Anleger.
+              </p>
+            </div>
+
+            {r.tranches.length > 0 && (
+              <div className="tranche-hist">
+                <div className="eyebrow-plain">Tranchenhistorie dieser Runde</div>
+                {r.tranches.map((t) => (
+                  <div key={t.label} className="tranche-row">
+                    <span className="t-name">{t.label} abgeschlossen</span>
+                    <span className="t-date">{fmtDate(t.date)}</span>
+                    <span className="t-vol">{fmtEur(t.volume)} Investmentvolumen</span>
+                  </div>
+                ))}
+                <p className="facts-src">
+                  Mehrere Teilabschlüsse gehören zu dieser Runde – gleiche Runde, keine neuen
+                  Angebote zu neuen Konditionen.
+                </p>
+              </div>
+            )}
+
+            <p className="facts-src" style={{ marginTop: 12 }}>
+              Zum Enddatum oder bei ausgeschöpfter Obergrenze werden keine neuen Investments angenommen.
+              Offene, rechtzeitig eingegangene Zeichnungen werden nach den definierten Regeln abgewickelt.
+              Für Restbeträge unter der Teilabschluss-Schwelle ist Schlussabschluss oder Rückzahlung
+              noch festzulegen (offene Produktentscheidung).
+            </p>
+
+            {r.open && space > 0 ? (
+              <button className="btn btn-accent" style={{ width: "100%", marginTop: 14 }} onClick={onInvest}>
+                Investieren (Simulation) <IconArrowUpRight size={16} />
+              </button>
+            ) : (
+              <div className="closed-state">
+                {space <= 0 ? "Zeichnungsraum ausgeschöpft – keine neuen Investments" : "Runde geschlossen – keine neuen Investments"}
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="section">
           <div className="section-head">
             <h2 className="h2">Updates</h2>
@@ -82,24 +171,6 @@ export default function StartupProfile({
             </article>
           ))}
         </div>
-
-        {s.round?.open && (
-          <>
-            <div className="section">
-              <div className="section-head"><h2 className="h2">Runde</h2></div>
-              <div className="summary-card">
-                <div className="sum-row"><span>Runde</span><b>{s.round.name}</b></div>
-                <div className="sum-row"><span>Zeitraum</span><b>{s.round.startsOrEnds}</b></div>
-                <div className="sum-row"><span>Mindestbetrag</span><b>ab {fmtEur(s.round.minTicket)}</b></div>
-                <div className="sum-row"><span>Füllstand</span><b>{Math.round(s.round.filled * 100)} %</b></div>
-              </div>
-              <div className="progress" style={{ margin: "12px 0 0" }}><span style={{ width: `${s.round.filled * 100}%` }} /></div>
-            </div>
-            <button className="btn btn-accent" style={{ width: "100%", marginTop: 18 }} onClick={onInvest}>
-              Investieren (Simulation) <IconArrowUpRight size={16} />
-            </button>
-          </>
-        )}
       </div>
     </>
   );

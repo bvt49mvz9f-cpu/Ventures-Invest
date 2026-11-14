@@ -107,7 +107,7 @@ function Overview({ onSearch, onOpenScreening, onInvest }: {
               <button className="close" aria-label="Ausblenden" onClick={(e) => { e.stopPropagation(); setShowRounds(false); }}><IconX size={18} /></button>
               <div className="eyebrow">Neue Runde</div>
               <h3>{s.name} · {s.round!.name} <IconChevron size={18} /></h3>
-              <p>{s.round!.startsOrEnds[0].toUpperCase() + s.round!.startsOrEnds.slice(1)} · ab {fmtEur(s.round!.minTicket)} dabei</p>
+              <p>läuft bis {fmtDate(s.round!.endDate)} · ab {fmtEur(s.round!.minTicket)} dabei · laufende Teilabschlüsse</p>
               <div className="dots">{open.map((o, i) => <span key={o.id} className={i === slide ? "on" : ""} />)}</div>
             </article>
           ))}
@@ -169,24 +169,34 @@ function Rounds({ onProfile }: { onProfile: (s: Startup) => void }) {
       <div className="hero">
         <div className="label">Offene Runden</div>
         <div className="hero-value"><strong>{open.length}</strong></div>
-        <p className="hero-line">Startups, in die du dich gerade beteiligen kannst.</p>
+        <p className="hero-line">Startups, in die du dich gerade beteiligen kannst – mit laufenden Teilabschlüssen.</p>
       </div>
       <div className="section">
         <div className="list">
-          {open.map((s) => (
-            <button key={s.id} className="item" style={{ alignItems: "flex-start" }} onClick={() => onProfile(s)}>
-              <Logo s={s} />
-              <div className="grow">
-                <div className="name">{s.name}</div>
-                <div className="sub">{s.round!.name} · {s.round!.startsOrEnds}</div>
-                <div className="progress"><span style={{ width: `${s.round!.filled * 100}%` }} /></div>
-              </div>
-              <div className="right">
-                <div className="val">ab {fmtEur(s.round!.minTicket)}</div>
-                <div className="sub">{fmtMio(s.valuation)}</div>
-              </div>
-            </button>
-          ))}
+          {open.map((s) => {
+            const r = s.round!;
+            return (
+              <button key={s.id} className="item" style={{ alignItems: "flex-start" }} onClick={() => onProfile(s)}>
+                <Logo s={s} />
+                <div className="grow">
+                  <div className="name">{s.name}</div>
+                  <div className="sub">{r.name} · läuft bis {fmtDate(r.endDate)} · Schwelle {fmtEur(r.closingThreshold)}</div>
+                  <div className="stacked-bar" aria-label={`Fortschritt ${s.name}`}>
+                    <span className="seg closed" style={{ width: `${(r.closed / r.cap) * 100}%` }} />
+                    <span className="seg open-c" style={{ width: `${(r.openCommitments / r.cap) * 100}%` }} />
+                    <span className="seg pending" style={{ width: `${(r.pendingPayments / r.cap) * 100}%` }} />
+                  </div>
+                  <div className="sub" style={{ marginTop: 4 }}>
+                    {fmtEur(r.closed)} abgeschlossen · {fmtEur(r.paidOut)} ans Startup ausgezahlt
+                  </div>
+                </div>
+                <div className="right">
+                  <div className="val">ab {fmtEur(r.minTicket)}</div>
+                  <div className="sub">{fmtMio(s.valuation)}</div>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
     </>
