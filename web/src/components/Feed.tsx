@@ -2,16 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { byId, posts, reels, type Post, type Startup } from "@/lib/data";
-import { fmtCompact } from "@/lib/format";
 import Logo, { Orbs } from "./Logo";
 import Portal from "./Portal";
 import InvestSheet from "./InvestSheet";
-import { IconArrowUpRight, IconChat, IconHeart, IconPlayFilled, IconShare, IconX } from "./Icons";
+import StartupProfile from "./StartupProfile";
+import { IconArrowUpRight, IconBookmark, IconChat, IconHeart, IconPlayFilled, IconShare, IconX } from "./Icons";
 
 export default function Feed() {
   const [mode, setMode] = useState<"posts" | "reels">("posts");
   const [video, setVideo] = useState<Startup | null>(null);
   const [invest, setInvest] = useState<Startup | null>(null);
+  const [profile, setProfile] = useState<Startup | null>(null);
 
   return (
     <>
@@ -24,10 +25,11 @@ export default function Feed() {
 
       {mode === "posts"
         ? <div>{posts.map((p) => <PostItem key={p.id} p={p} onPlay={() => setVideo(byId(p.startupId))} onInvest={() => setInvest(byId(p.startupId))} />)}</div>
-        : <Reels />}
+        : <Reels onOpen={setProfile} />}
 
       {video && <Portal><VideoModal s={video} onClose={() => setVideo(null)} /></Portal>}
       {invest && <Portal><InvestSheet s={invest} onClose={() => setInvest(null)} /></Portal>}
+      {profile && <Portal><StartupProfile s={profile} onInvest={() => { setProfile(null); setInvest(profile); }} onClose={() => setProfile(null)} /></Portal>}
     </>
   );
 }
@@ -75,7 +77,7 @@ function PostItem({ p, onPlay, onInvest }: { p: Post; onPlay: () => void; onInve
   );
 }
 
-function Reels() {
+function Reels({ onOpen }: { onOpen: (s: Startup) => void }) {
   const [liked, setLiked] = useState<Record<string, boolean>>({});
   return (
     <div className="reels">
@@ -91,14 +93,19 @@ function Reels() {
               <div className="row"><Logo s={s} size={34} /><strong style={{ fontSize: 14.5 }}>{s.name}</strong></div>
               <h3>{r.title}</h3>
               <p>{r.caption}</p>
+              <button className="reel-cta glass" onClick={() => onOpen(s)}>
+                {s.round?.open ? `Zur Runde · ${s.round.name}` : `Zu ${s.name}`}
+                <IconArrowUpRight size={16} />
+              </button>
             </div>
             <div className="reel-side">
               <div>
-                <button className={`round-btn glass ${on ? "liked" : ""}`} onClick={() => setLiked({ ...liked, [r.id]: !on })} aria-label="Gefällt mir" aria-pressed={on}><IconHeart size={22} /></button>
-                <small>{fmtCompact(r.likes + (on ? 1 : 0))}</small>
+                <button className={`round-btn glass ${on ? "saved" : ""}`} onClick={() => setLiked({ ...liked, [r.id]: !on })} aria-label="Zur Watchlist" aria-pressed={on}>
+                  <IconBookmark size={20} fill={on ? "currentColor" : "none"} />
+                </button>
+                <small>{on ? "Gemerkt" : "Merken"}</small>
               </div>
-              <div><button className="round-btn glass" aria-label="Kommentare"><IconChat size={21} /></button><small>{r.comments}</small></div>
-              <div><button className="round-btn glass" aria-label="Teilen"><IconShare size={21} /></button></div>
+              <div><button className="round-btn glass" aria-label="Teilen"><IconShare size={20} /></button><small>Teilen</small></div>
             </div>
           </article>
         );

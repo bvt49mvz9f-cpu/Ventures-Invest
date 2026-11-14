@@ -122,11 +122,16 @@ input, textarea, select { font: inherit; color: inherit; }
 .action { height: 54px; border-radius: var(--r-md); padding: 0 18px; display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 600; }
 
 .bubbles { position: relative; width: 100%; aspect-ratio: 1 / 0.72; margin-top: 8px; }
-.bubble { position: absolute; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: translate(-50%, -50%); background: var(--surface); border: 1px solid var(--hairline); }
-.bubble .p { font-size: 17px; font-weight: 650; letter-spacing: -0.02em; }
+.bubble {
+  position: absolute; border-radius: 50%; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: radial-gradient(120% 120% at 30% 20%, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015) 60%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+.bubble .p { font-size: 16px; font-weight: 600; letter-spacing: -0.02em; color: #d8d8dc; }
 .bubble .l { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.bubble.top { background: var(--accent-grad); border: 0; color: #1a0a02; }
-.bubble.top .l { color: rgba(26, 10, 2, 0.65); }
+.bubble.top { background: radial-gradient(120% 120% at 30% 20%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03) 65%); border-color: rgba(255, 255, 255, 0.12); }
+.bubble.top .p { font-size: 22px; color: #fff; }
 .bubble.sm .p { font-size: 13px; }
 .bubble.sm .l { font-size: 9.5px; }
 
@@ -316,3 +321,7 @@ input, textarea, select { font: inherit; color: inherit; }
 
 /* Sheet-Position */
 .sheet { top: 10px; }
+
+/* Reels: Watchlist + Weg zum Startup */
+.reel-side .saved { color: var(--accent); }
+.reel-cta { margin-top: 14px; height: 40px; padding: 0 16px; border-radius: var(--r-pill); display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
