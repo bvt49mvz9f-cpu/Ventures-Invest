@@ -261,4 +261,47 @@ export const reels: Reel[] = [
   { id: "r5", startupId: "nordwatt", kind: "Lustig", title: "Der Speicher im Keller", caption: "Was unsere Installateure im Keller schon alles gefunden haben (Teil 3).", likes: 1688, comments: 97 },
 ];
 
-export const byId = (id: string) => startups.find((s) => s.id === id)!;
+export type Post = {
+  id: string;
+  startupId: string;
+  ago: string;
+  text: string;
+  media?: { kind: "image" | "video"; caption: string; length?: string };
+  likes: number;
+  comments: number;
+};
+
+export const posts: Post[] = [
+  {
+    id: "p1", startupId: "melious", ago: "2 Std.",
+    text: "Ab heute laufen über 60 Open-Weight-Modelle bei uns – alle auf europäischer Infrastruktur. 🇪🇺\n\nDanke an alle, die uns in der Beta Feedback gegeben haben. Als Nächstes: eigene Fine-Tunes für Unternehmenskunden.",
+    media: { kind: "video", caption: "Unser Vorstellungsvideo", length: "1:42" }, likes: 214, comments: 31,
+  },
+  {
+    id: "p2", startupId: "zoopa", ago: "5 Std.",
+    text: "Wir suchen 10 Pilotkunden aus dem Mittelstand, die ihren Vertrieb mit KI-Agenten testen wollen. Kostenlos für 3 Monate – schreibt uns gern direkt hier.",
+    likes: 96, comments: 18,
+  },
+  {
+    id: "p3", startupId: "privano", ago: "gestern",
+    text: "Eine DSGVO-Auskunftsanfrage dauert im Schnitt 6 Stunden. Mit Privano sind es 12 Minuten. Wir haben ausgerechnet, was das für ein 50-Personen-Unternehmen pro Jahr bedeutet 👇",
+    media: { kind: "image", caption: "6 Std. → 12 Min." }, likes: 158, comments: 22,
+  },
+  {
+    id: "p4", startupId: "kernel", ago: "gestern",
+    text: "Unser 100. Cobot ist ausgeliefert – an einen Familienbetrieb in Aachen, der seit 1921 Zahnräder fertigt. Team-Foto vor der Halle 📸",
+    media: { kind: "image", caption: "Auslieferung Nr. 100" }, likes: 412, comments: 47,
+  },
+  {
+    id: "p5", startupId: "klarheit", ago: "vor 2 Tagen",
+    text: "Unsere Seed-Extension ist zu 88 % vergeben. Wer noch dabei sein will: Die Runde schließt am 5. Dezember.",
+    likes: 73, comments: 9,
+  },
+  {
+    id: "p6", startupId: "nordwatt", ago: "vor 3 Tagen",
+    text: "Neues Projekt in Hamburg-Altona: 48 Wohnungen, ein Speicher im Keller, im Schnitt 31 % weniger Stromkosten für die Mieter*innen.",
+    media: { kind: "video", caption: "Rundgang durch den Keller", length: "2:05" }, likes: 188, comments: 14,
+  },
+];
+
+export const byId =(id: string) => startups.find((s) => s.id === id)!;

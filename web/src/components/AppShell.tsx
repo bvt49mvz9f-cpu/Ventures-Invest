@@ -36,7 +36,7 @@ export default function AppShell() {
 
   return (
     <>
-      <div className="ambient" aria-hidden="true"><span className="a1" /><span className="a2" /><span className="a3" /></div>
+      <div className="ambient" aria-hidden="true"><span className="a1" /><span className="a2" /></div>
       <main className="app">
         <div className="pager" ref={pager} onScroll={onScroll}>
           <section className="page" aria-label="Feed"><Feed /></section>
@@ -45,11 +45,11 @@ export default function AppShell() {
         </div>
       </main>
       <div className="nav-wrap">
-        <nav className="nav glass glass-strong" aria-label="Hauptnavigation">
-          <span className="nav-indicator glass glass-strong" style={{ transform: `translateX(${active * 100}%)` }} />
+        <nav className="nav" aria-label="Hauptnavigation">
+          <span className="nav-indicator" style={{ transform: `translateX(${active * 100}%)` }} />
           {tabs.map(({ key, label, Icon }, i) => (
             <button key={key} onClick={() => go(i)} aria-current={active === i ? "page" : undefined}>
-              <Icon size={21} />
+              <Icon size={20} />
               {label}
             </button>
           ))}

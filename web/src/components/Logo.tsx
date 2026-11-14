@@ -1,19 +1,19 @@
 import type { Startup } from "@/lib/data";
 
-export default function Logo({ s, size = 44 }: { s: Startup; size?: number }) {
+export default function Logo({ s, size = 42 }: { s: Startup; size?: number }) {
   return (
     <div
-      className="logo glass"
+      className="logo"
       style={{
         width: size,
         height: size,
-        borderRadius: size * 0.32,
-        fontSize: size * 0.36,
-        color: `hsl(${s.hue} 75% 72%)`,
-        background: `linear-gradient(160deg, hsl(${s.hue} 60% 50% / 0.22), hsl(${s.hue} 60% 30% / 0.08))`,
+        borderRadius: size * 0.3,
+        fontSize: size * 0.4,
+        color: `hsl(${s.hue} 85% 68%)`,
+        background: `hsl(${s.hue} 30% 12%)`,
       }}
     >
-      <span>{s.initial}</span>
+      {s.initial}
     </div>
   );
 }
