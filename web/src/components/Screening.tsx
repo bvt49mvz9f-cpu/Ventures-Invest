@@ -21,7 +21,7 @@ const KEYWORDS: { re: RegExp; c: Criterion }[] = [
   { re: /(health|gesundheit|medizin)/i, c: { key: "s:Health", label: "Health", test: (s) => s.sector === "Health" } },
   { re: /(fintech|finanz|banking)/i, c: { key: "s:Fintech", label: "Fintech", test: (s) => s.sector === "Fintech" } },
   { re: /(robot|automatisierung|industrie)/i, c: { key: "s:Robotics", label: "Robotics", test: (s) => s.sector === "Robotics" } },
-  { re: /(datenschutz|privacy|dsgvo|compliance)/i, c: { key: "s:Privacy", label: "Privacy", test: (s) => s.sector === "Privacy" } },
+  { re: /(vertrieb|sales|kunden|akquise)/i, c: { key: "s:Sales", label: "Sales", test: (s) => s.sector === "Sales" } },
   { re: /(saarland|saarbrücken)/i, c: { key: "c:Saarbrücken", label: "Saarland", test: (s) => s.city === "Saarbrücken" } },
   { re: /pre-?seed/i, c: { key: "p:Pre-Seed", label: "Pre-Seed", test: (s) => s.stage === "Pre-Seed" } },
   { re: /(?<!pre-?)\bseed\b/i, c: { key: "p:Seed", label: "Seed", test: (s) => s.stage === "Seed" } },
@@ -33,7 +33,7 @@ for (const city of CITIES) {
   if (city !== "Saarbrücken") KEYWORDS.push({ re: new RegExp(city, "i"), c: { key: `c:${city}`, label: city, test: (s) => s.city === city } });
 }
 
-const EXAMPLES = ["KI aus dem Saarland mit offener Runde", "Klima-Startups in der Seed-Phase", "B2B Datenschutz"];
+const EXAMPLES = ["KI aus dem Saarland mit offener Runde", "Klima-Startups in der Seed-Phase", "B2B Vertrieb"];
 
 type MenuKey = "sector" | "stage" | "city" | null;
 

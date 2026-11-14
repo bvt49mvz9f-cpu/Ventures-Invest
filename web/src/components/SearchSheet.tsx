@@ -76,17 +76,6 @@ export default function SearchSheet({ onClose }: { onClose: () => void }) {
               </div>
             </div>
 
-            <div className="section" style={{ marginTop: 30 }}>
-              <div className="section-head"><h2 className="h2">Beliebt</h2></div>
-              <div className="list">
-                {startups.slice(0, 5).map((s) => (
-                  <button key={s.id} className="item" onClick={() => setQ(s.name)}>
-                    <Logo s={s} />
-                    <div className="grow"><div className="name">{s.name}</div><div className="sub">{s.tagline}</div></div>
-                  </button>
-                ))}
-              </div>
-            </div>
           </>
         )}
       </div>
